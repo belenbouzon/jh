@@ -1,0 +1,27 @@
+{
+  "generator-jhipster": {
+    "jhipsterVersion": "3.5.1",
+    "baseName": "colorima",
+    "packageName": "com.belen.colorima",
+    "packageFolder": "com/belen/colorima",
+    "serverPort": "8080",
+    "authenticationType": "session",
+    "hibernateCache": "no",
+    "clusteredHttpSession": "no",
+    "websocket": "no",
+    "databaseType": "sql",
+    "devDatabaseType": "mariadb",
+    "prodDatabaseType": "mariadb",
+    "searchEngine": "no",
+    "buildTool": "maven",
+    "enableSocialSignIn": false,
+    "rememberMeKey": "793ffbb716b1119c1470f506101306fbb7d884f2",
+    "useSass": false,
+    "applicationType": "monolith",
+    "testFrameworks": [
+      "gatling"
+    ],
+    "jhiPrefix": "jhi",
+    "enableTranslation": false
+  }
+}
