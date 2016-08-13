@@ -23,6 +23,14 @@ public class Gama implements Serializable {
 
     @Column(name = "tono")
     private String tono;
+    
+    public Gama(){}
+    
+    public Gama(String cliente, String tono)
+    {
+    	this.cliente = cliente;
+    	this.tono = tono;
+    }
 
     public Long getId() {
         return id;

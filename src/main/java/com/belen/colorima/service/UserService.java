@@ -1,10 +1,12 @@
 package com.belen.colorima.service;
 
 import com.belen.colorima.domain.Authority;
+import com.belen.colorima.domain.Gama;
 import com.belen.colorima.domain.User;
 import com.belen.colorima.repository.AuthorityRepository;
 import com.belen.colorima.repository.PersistentTokenRepository;
 import com.belen.colorima.repository.UserRepository;
+import com.belen.colorima.repository.GamaRepository;
 import com.belen.colorima.security.AuthoritiesConstants;
 import com.belen.colorima.security.SecurityUtils;
 import com.belen.colorima.service.util.RandomUtil;
@@ -36,6 +38,9 @@ public class UserService {
 
     @Inject
     private UserRepository userRepository;
+    
+    @Inject
+    private GamaRepository gamaRepository;
 
 
     @Inject
@@ -89,6 +94,14 @@ public class UserService {
         String langKey) {
 
         User newUser = new User();
+        gamaRepository.save(new Gama("UnCliente", "verde"));
+        gamaRepository.save(new Gama("OtroCliente", "azul"));
+        System.out.println("Cliente verde:");
+
+        System.out.println(gamaRepository.findOneByTono("verde").toString());
+        System.out.println("Cliente otroCliente:");
+        System.out.println(gamaRepository.findOneByCliente("OtroCliente").toString());
+
         Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
         Set<Authority> authorities = new HashSet<>();
         String encryptedPassword = passwordEncoder.encode(password);
