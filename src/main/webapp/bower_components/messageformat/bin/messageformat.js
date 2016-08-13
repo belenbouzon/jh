@@ -1,5 +1,4 @@
-#!/usr/bin/env node
-
+/**#!/usr/bin/env node*/
 /**
  * Copyright 2012-2014 Alex Sexton, Eemeli Aro, and Contributors
  *
