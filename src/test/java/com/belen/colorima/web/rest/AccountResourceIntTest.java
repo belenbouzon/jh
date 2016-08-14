@@ -8,6 +8,7 @@ import com.belen.colorima.repository.UserRepository;
 import com.belen.colorima.security.AuthoritiesConstants;
 import com.belen.colorima.service.MailService;
 import com.belen.colorima.service.UserService;
+import com.belen.colorima.service.UserServiceInterface;
 import com.belen.colorima.web.rest.dto.ManagedUserDTO;
 import com.belen.colorima.web.rest.dto.UserDTO;
 import org.junit.Before;
@@ -55,10 +56,10 @@ public class AccountResourceIntTest {
     private AuthorityRepository authorityRepository;
 
     @Inject
-    private UserService userService;
+    private UserServiceInterface userService;
 
     @Mock
-    private UserService mockUserService;
+    private UserServiceInterface mockUserService;
 
     @Mock
     private MailService mockMailService;

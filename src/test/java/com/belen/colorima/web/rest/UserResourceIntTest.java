@@ -3,7 +3,8 @@ package com.belen.colorima.web.rest;
 import com.belen.colorima.ColorimaApp;
 import com.belen.colorima.domain.User;
 import com.belen.colorima.repository.UserRepository;
-import com.belen.colorima.service.UserService;
+import com.belen.colorima.service.UserServiceInterface;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,7 +39,7 @@ public class UserResourceIntTest {
     private UserRepository userRepository;
 
     @Inject
-    private UserService userService;
+    private UserServiceInterface userService;
 
     private MockMvc restUserMockMvc;
 

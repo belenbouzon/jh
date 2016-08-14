@@ -28,7 +28,7 @@ import java.util.*;
  */
 @Service
 @Transactional
-public class UserService {
+public class UserService implements UserServiceInterface {
 
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
@@ -49,7 +49,11 @@ public class UserService {
     @Inject
     private AuthorityRepository authorityRepository;
 
-    public Optional<User> activateRegistration(String key) {
+    /* (non-Javadoc)
+	 * @see com.belen.colorima.service.UserServiceInterface#activateRegistration(java.lang.String)
+	 */
+    @Override
+	public Optional<User> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
         return userRepository.findOneByActivationKey(key)
             .map(user -> {
@@ -62,7 +66,11 @@ public class UserService {
             });
     }
 
-    public Optional<User> completePasswordReset(String newPassword, String key) {
+    /* (non-Javadoc)
+	 * @see com.belen.colorima.service.UserServiceInterface#completePasswordReset(java.lang.String, java.lang.String)
+	 */
+    @Override
+	public Optional<User> completePasswordReset(String newPassword, String key) {
        log.debug("Reset user password for reset key {}", key);
 
        return userRepository.findOneByResetKey(key)
@@ -79,7 +87,11 @@ public class UserService {
            });
     }
 
-    public Optional<User> requestPasswordReset(String mail) {
+    /* (non-Javadoc)
+	 * @see com.belen.colorima.service.UserServiceInterface#requestPasswordReset(java.lang.String)
+	 */
+    @Override
+	public Optional<User> requestPasswordReset(String mail) {
         return userRepository.findOneByEmail(mail)
             .filter(User::getActivated)
             .map(user -> {
@@ -90,17 +102,20 @@ public class UserService {
             });
     }
 
-    public User createUserInformation(String login, String password, String firstName, String lastName, String email,
+    /* (non-Javadoc)
+	 * @see com.belen.colorima.service.UserServiceInterface#createUserInformation(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+    @Override
+	public User createUserInformation(String login, String password, String firstName, String lastName, String email,
         String langKey) {
 
         User newUser = new User();
-        gamaRepository.save(new Gama("UnCliente", "verde"));
-        gamaRepository.save(new Gama("OtroCliente", "azul"));
+        Optional<List<Gama>> lista = gamaRepository.findByClient("liente");
         System.out.println("Cliente verde:");
-
         System.out.println(gamaRepository.findOneByTono("verde").toString());
         System.out.println("Cliente otroCliente:");
-        System.out.println(gamaRepository.findOneByCliente("OtroCliente").toString());
+        Optional<Gama> gama = gamaRepository.findOneByCliente("OtroCliente");
+        System.out.println(gama.isPresent()? gama.get().getCliente() : "no hay resultados");
 
         Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
         Set<Authority> authorities = new HashSet<>();
@@ -123,7 +138,11 @@ public class UserService {
         return newUser;
     }
 
-    public User createUser(ManagedUserDTO managedUserDTO) {
+    /* (non-Javadoc)
+	 * @see com.belen.colorima.service.UserServiceInterface#createUser(com.belen.colorima.web.rest.dto.ManagedUserDTO)
+	 */
+    @Override
+	public User createUser(ManagedUserDTO managedUserDTO) {
         User user = new User();
         user.setLogin(managedUserDTO.getLogin());
         user.setFirstName(managedUserDTO.getFirstName());
@@ -151,7 +170,11 @@ public class UserService {
         return user;
     }
 
-    public void updateUserInformation(String firstName, String lastName, String email, String langKey) {
+    /* (non-Javadoc)
+	 * @see com.belen.colorima.service.UserServiceInterface#updateUserInformation(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+    @Override
+	public void updateUserInformation(String firstName, String lastName, String email, String langKey) {
         userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).ifPresent(u -> {
             u.setFirstName(firstName);
             u.setLastName(lastName);
@@ -162,14 +185,22 @@ public class UserService {
         });
     }
 
-    public void deleteUserInformation(String login) {
+    /* (non-Javadoc)
+	 * @see com.belen.colorima.service.UserServiceInterface#deleteUserInformation(java.lang.String)
+	 */
+    @Override
+	public void deleteUserInformation(String login) {
         userRepository.findOneByLogin(login).ifPresent(u -> {
             userRepository.delete(u);
             log.debug("Deleted User: {}", u);
         });
     }
 
-    public void changePassword(String password) {
+    /* (non-Javadoc)
+	 * @see com.belen.colorima.service.UserServiceInterface#changePassword(java.lang.String)
+	 */
+    @Override
+	public void changePassword(String password) {
         userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).ifPresent(u -> {
             String encryptedPassword = passwordEncoder.encode(password);
             u.setPassword(encryptedPassword);
@@ -178,7 +209,11 @@ public class UserService {
         });
     }
 
-    @Transactional(readOnly = true)
+    /* (non-Javadoc)
+	 * @see com.belen.colorima.service.UserServiceInterface#getUserWithAuthoritiesByLogin(java.lang.String)
+	 */
+    @Override
+	@Transactional(readOnly = true)
     public Optional<User> getUserWithAuthoritiesByLogin(String login) {
         return userRepository.findOneByLogin(login).map(u -> {
             u.getAuthorities().size();
@@ -186,28 +221,33 @@ public class UserService {
         });
     }
 
-    @Transactional(readOnly = true)
+    /* (non-Javadoc)
+	 * @see com.belen.colorima.service.UserServiceInterface#getUserWithAuthorities(java.lang.Long)
+	 */
+    @Override
+	@Transactional(readOnly = true)
     public User getUserWithAuthorities(Long id) {
         User user = userRepository.findOne(id);
         user.getAuthorities().size(); // eagerly load the association
         return user;
     }
 
-    @Transactional(readOnly = true)
+    /* (non-Javadoc)
+	 * @see com.belen.colorima.service.UserServiceInterface#getUserWithAuthorities()
+	 */
+    @Override
+	@Transactional(readOnly = true)
     public User getUserWithAuthorities() {
         User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
         user.getAuthorities().size(); // eagerly load the association
         return user;
     }
 
-    /**
-     * Persistent Token are used for providing automatic authentication, they should be automatically deleted after
-     * 30 days.
-     * <p>
-     * This is scheduled to get fired everyday, at midnight.
-     * </p>
-     */
-    @Scheduled(cron = "0 0 0 * * ?")
+    /* (non-Javadoc)
+	 * @see com.belen.colorima.service.UserServiceInterface#removeOldPersistentTokens()
+	 */
+    @Override
+	@Scheduled(cron = "0 0 0 * * ?")
     public void removeOldPersistentTokens() {
         LocalDate now = LocalDate.now();
         persistentTokenRepository.findByTokenDateBefore(now.minusMonths(1)).stream().forEach(token -> {
@@ -218,13 +258,11 @@ public class UserService {
         });
     }
 
-    /**
-     * Not activated users should be automatically deleted after 3 days.
-     * <p>
-     * This is scheduled to get fired everyday, at 01:00 (am).
-     * </p>
-     */
-    @Scheduled(cron = "0 0 1 * * ?")
+    /* (non-Javadoc)
+	 * @see com.belen.colorima.service.UserServiceInterface#removeNotActivatedUsers()
+	 */
+    @Override
+	@Scheduled(cron = "0 0 1 * * ?")
     public void removeNotActivatedUsers() {
         ZonedDateTime now = ZonedDateTime.now();
         List<User> users = userRepository.findAllByActivatedIsFalseAndCreatedDateBefore(now.minusDays(3));

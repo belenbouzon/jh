@@ -14,10 +14,11 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 public interface GamaRepository extends JpaRepository<Gama,Long> {
 	
-    Optional<User> findOneByTono(String tono);
-    Optional<User> findOneByCliente(String cliente);
+    Optional<Gama> findOneByTono(String tono);
+    Optional<Gama> findOneByCliente(String cliente);
 
-    
+    @Query("SELECT g FROM Gama g where g.cliente like %?1")
+    public Optional<List<Gama>> findByClient(String client);
     
 
 

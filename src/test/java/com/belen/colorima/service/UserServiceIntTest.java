@@ -41,7 +41,7 @@ public class UserServiceIntTest {
     private UserRepository userRepository;
 
     @Inject
-    private UserService userService;
+    private UserServiceInterface userService;
 
     @Test
     public void testRemoveOldPersistentTokens() {

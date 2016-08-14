@@ -8,7 +8,7 @@ import com.belen.colorima.repository.PersistentTokenRepository;
 import com.belen.colorima.repository.UserRepository;
 import com.belen.colorima.security.SecurityUtils;
 import com.belen.colorima.service.MailService;
-import com.belen.colorima.service.UserService;
+import com.belen.colorima.service.UserServiceInterface;
 import com.belen.colorima.web.rest.dto.KeyAndPasswordDTO;
 import com.belen.colorima.web.rest.dto.ManagedUserDTO;
 import com.belen.colorima.web.rest.dto.UserDTO;
@@ -43,7 +43,7 @@ public class AccountResource {
     private UserRepository userRepository;
 
     @Inject
-    private UserService userService;
+    private UserServiceInterface userService;
 
     @Inject
     private PersistentTokenRepository persistentTokenRepository;

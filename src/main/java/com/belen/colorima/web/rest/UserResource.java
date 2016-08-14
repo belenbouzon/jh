@@ -8,7 +8,7 @@ import com.belen.colorima.repository.AuthorityRepository;
 import com.belen.colorima.repository.UserRepository;
 import com.belen.colorima.security.AuthoritiesConstants;
 import com.belen.colorima.service.MailService;
-import com.belen.colorima.service.UserService;
+import com.belen.colorima.service.UserServiceInterface;
 import com.belen.colorima.web.rest.dto.ManagedUserDTO;
 import com.belen.colorima.web.rest.util.HeaderUtil;
 import com.belen.colorima.web.rest.util.PaginationUtil;
@@ -72,7 +72,7 @@ public class UserResource {
     private AuthorityRepository authorityRepository;
 
     @Inject
-    private UserService userService;
+    private UserServiceInterface userService;
 
     /**
      * POST  /users  : Creates a new user.
